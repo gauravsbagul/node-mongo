@@ -9,7 +9,7 @@ var {Todo} = require('./models/todo');
 var {studentDB} = require('./models/studentDB');
 
 var app = express();
-
+const port = process.env.PORT || 3000
 app.use(bodyParser.json());
 
 app.post('/todos', (req, res) =>{
@@ -46,13 +46,32 @@ app.get('/todo/:id',(req, res) => {
                 return res.status(404).send();
             }
             res.send({todo});
-        }).catch((e) => {;
+        }).catch((e) => {
             res.status(400).send()
         });
     });
 
-app.listen(3000,() => {
-    console.log('Starting at port 3000');
+app.delete('/todo/:id', (req, res) => {
+    //get the id
+    var id = req.params.id;
+    console.log(id)
+        if(!ObjectId.isValid(id)){
+            return res.status(404).send();
+        }
+        
+        Todo.findByIdAndRemove(id).then((todo) => {
+            if(!todo){
+                return res.status(404).send();
+            }
+                res.send({todo})
+                // console.log("todo deleted", todo);
+            }).catch((e) => {
+                res.status(400).send();
+            });
+});
+
+app.listen(port,() => {
+    console.log('Starting at port',port);
 });
 
 module.exports = {app};
