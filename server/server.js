@@ -7,7 +7,7 @@ const { ObjectId } = require('mongodb');
 //Local
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
-var {studentDB} = require('./models/studentDB');
+var {User} = require('./models/user');
 
 var app = express();
 const port = process.env.PORT || 3000
@@ -36,7 +36,7 @@ app.get('/todos',(req,res) => {
 });
 
 //GET /Todos/1234
-app.get('/todos/:id',(req, res) => {
+app.get('/todos:id',(req, res) => {
     var id = req.params.id;
         if(!ObjectId.isValid(id)){
             return res.status(404).send();
@@ -52,7 +52,7 @@ app.get('/todos/:id',(req, res) => {
         });
     });
 
-app.delete('/todos/:id', (req, res) => {
+app.delete('/todos:id', (req, res) => {
     //get the id
     var id = req.params.id;
     console.log(id)
@@ -68,10 +68,10 @@ app.delete('/todos/:id', (req, res) => {
                 // console.log("todo deleted", todo);
             }).catch((e) => {
                 res.status(400).send();
-            });
+            }); 
 });
 
-app.patch('/todos/:id', (req, res) => {
+app.patch('/todos:id', (req, res) => {
     var id = req.params.id;
     var body = _.pick(req.body, ['text', 'completed'])
 
@@ -96,6 +96,21 @@ app.patch('/todos/:id', (req, res) => {
         res.status(400).send();
     })
 });
+
+//Post /users
+app.post('/users', (req, res) =>{
+    console.log(req.body);
+
+    var body = _.pick(req.body, ['email', 'password']);
+    var user = new User(body);
+
+    user.save().then((user) => {
+        res.send(user);
+    }).catch((e) => {
+        res.status(400).send(e);
+    })
+});
+
 
 app.listen(port,() => {
     console.log('Starting at port',port);
