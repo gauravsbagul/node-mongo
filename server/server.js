@@ -11,7 +11,7 @@ var app = express();
 
 app.use(bodyParser.json());
 
-app.post('/todo', (req, res) =>{
+app.post('/todos', (req, res) =>{
     var todo = new Todo({
         text: req.body.text
     });
@@ -21,10 +21,20 @@ app.post('/todo', (req, res) =>{
     }, (e) => {
         res.status(400).send(e);
     });
-    console.log(req.body);
+    // console.log(req.body);
 });
 
+app.get('/todos',(req,res) => {
+    Todo.find().then((todos) => {
+        res.send({todos,})
+    },(e) => {
+        res.status(400).send(e)
+        console.log("eror=>", e);
+    });
+});
 
 app.listen(3000,() => {
     console.log('Starting at port 3000');
 });
+
+module.exports = {app};
