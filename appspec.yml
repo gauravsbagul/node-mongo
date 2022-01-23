@@ -3,7 +3,7 @@ os: linux
 files:
  - source: /server
    destination: home/ec2-user/node-mongo
-hook:
+hooks:
  ApplicationStop:
   - location: script/application_stop.sh
     timeout: 300
