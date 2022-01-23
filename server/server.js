@@ -9,12 +9,13 @@ var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
-var app = express();
-const port = process.env.PORT || 3000
+const app = express();
+const port = process.env.PORT || 5000
 app.use(bodyParser.json());
 
 app.post('/todos', (req, res) =>{
-    var todo = new Todo({
+    console.log('Log: ~> file: server.js ~> line 19 ~> app.post ~> req.body', req.body)
+    const todo = new Todo({
         text: req.body.text
     });
     todo.save().then((doc)=>{
@@ -110,6 +111,14 @@ app.post('/users', (req, res) =>{
         res.status(400).send(e);
     })
 });
+
+
+
+//Post /users
+app.get('/', (req, res) =>{
+    res.send('<h1> Hello world  </h1>');
+});
+
 
 
 app.listen(port,() => {

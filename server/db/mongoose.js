@@ -1,9 +1,6 @@
-    var mongoose = require('mongoose');
-        mongoose.Promise = global.Promise;
-            mongoose.connect('mongodb://localhost:27017/TodoApp');
+const mongoose=require('mongoose');
+mongoose.Promise=global.Promise;
+mongoose.connect('mongodb+srv://node-mongo:node123@cluster0.hfrot.mongodb.net/todo');
 
-    var mongoose = require('mongoose');
-        mongoose.Promise = global.Promise;
-            mongoose.connect('mongodb://localhost:27017/user');
 
-    module.exports={mongoose};
+module.exports={ mongoose };
